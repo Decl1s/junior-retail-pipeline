@@ -1,5 +1,7 @@
 # Конвейер продаж — учебный проект дата-инженера
 
+[Релиз 0.1.0 и архив](https://github.com/Decl1s/junior-retail-pipeline/releases/tag/v0.1.0) · [Проверки CI](https://github.com/Decl1s/junior-retail-pipeline/actions)
+
 Junior Retail Pipeline — небольшой проект для портфолио: две синтетические CSV-поставки
 превращаются в локальное аналитическое хранилище, проверенные SQL-витрины,
 выгрузки Parquet и отчёт на русском языке.
