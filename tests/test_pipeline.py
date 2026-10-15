@@ -142,9 +142,9 @@ class PipelineTests(unittest.TestCase):
         result = self.execute()
         self.assertEqual(result["files_loaded"], 2)
         self.assertEqual(result["events_inserted"], 0)
-        metrics = json.loads((self.output / "metrics.json").read_text())
+        metrics = json.loads((self.output / "metrics.json").read_text(encoding="utf-8"))
         self.assertEqual(metrics["revenue_cents"], 0)
-        self.assertIn("Заказов пока нет", (self.output / "report.html").read_text())
+        self.assertIn("Заказов пока нет", (self.output / "report.html").read_text(encoding="utf-8"))
 
     def test_export_failure_can_be_recovered_without_duplicates(self):
         self.batch("one.csv", [event()])
@@ -163,7 +163,7 @@ class PipelineTests(unittest.TestCase):
         with duckdb.connect() as db:
             amount = db.execute("SELECT sum(revenue_cents) FROM read_parquet(?)", [str(self.output / "daily_sales.parquet")]).fetchone()[0]
         self.assertEqual(amount, 1800)
-        report = (self.output / "report.html").read_text()
+        report = (self.output / "report.html").read_text(encoding="utf-8")
         self.assertIn("18,00 $", report)
         self.assertNotIn("<script", report)
         self.assertNotIn("https://", report)
@@ -175,7 +175,7 @@ class PipelineTests(unittest.TestCase):
         note.write_text("keep", encoding="utf-8")
         with self.assertRaises(PipelineError):
             self.execute()
-        self.assertEqual(note.read_text(), "keep")
+        self.assertEqual(note.read_text(encoding="utf-8"), "keep")
         with self.assertRaisesRegex(PipelineError, "пересекаться"):
             run(self.input, self.database, self.input)
 
