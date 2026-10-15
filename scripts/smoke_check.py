@@ -7,6 +7,9 @@ from pathlib import Path
 
 
 def main() -> None:
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     completed = subprocess.run([sys.executable, "-m", "retail_pipeline", "run", "--json"], check=True, capture_output=True, text=True, encoding="utf-8")
     result = json.loads(completed.stdout)
     assert result["files_loaded"] == 0 and result["files_skipped"] == 2
